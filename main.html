@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Check</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    input[type="password"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 80%;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
+    .shake {
+      animation: shake 0.5s ease;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Enter Password</h2>
+    <input type="password" id="password" placeholder="Enter password" />
+    <br>
+    <button id="submitButton">Submit</button>
+    <p class="error" id="errorMessage" style="display:none;">Incorrect password!</p>
+  </div>
+
+  <script>
+    document.getElementById('submitButton').addEventListener('click', function() {
+      var password = document.getElementById('password').value;
+
+      const correctHash = "07876d9c097070d0fedc8b7c9d387c58bbdc83f8dcc738e490957df416a09314"; 
+
+      var hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+
+      if (hashedPassword === correctHash) {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { x: 0.5, y: 0.5 },
+          colors: ['#ff0', '#f00', '#00f', '#0f0']
+        });
+        alert("Correct password!");
+      } else {
+        document.getElementById('password').classList.add('shake');
+        setTimeout(function() {
+          document.getElementById('password').classList.remove('shake');
+        }, 500);
+        document.getElementById('errorMessage').style.display = 'block';
+      }
+    });
+  </script>
+
+</body>
+</html>
